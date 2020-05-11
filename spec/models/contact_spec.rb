@@ -1,94 +1,87 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'faker'
 
 RSpec.describe Contact, type: :model do
   it 'is valid with a firstname,lastname and email' do
-    @contact = Contact.new(
-      firstname: 'Aaron',
-      lastname: 'Finch',
-      email: 'AaronFinch@gmail.com'
-    )
+    @contact = build(:contact)
     expect(@contact).to be_valid
   end
 
-  it 'is invalid without a firstname' do
-    @contact = Contact.new(firstname: nil)
+  it 'is invalid without a first_name' do
+    @contact = build(:contact, first_name: nil)
     @contact.valid?
-    expect(@contact.errors[:firstname]).not_to include('Cannot be blank')
+    expect(@contact.errors.full_messages.first).to include("can't be blank")
   end
 
-  it 'is invalid without a lastname' do
-    @contact = Contact.new(lastname: nil)
+  it 'is invalid without a last_name' do
+    @contact = build(:contact, last_name: nil)
     @contact.valid?
-    expect(@contact.errors[:lastname]).not_to include('Cannot be blank')
+    expect(@contact.errors.full_messages.first).to include("can't be blank")
   end
 
   it 'is invalid without a email address' do
-    @contact = Contact.new(email: nil)
+    @contact = build(:contact, email: nil)
     @contact.valid?
-    expect(@contact.errors[:email]).not_to include('Cannot be blank')
+    expect(@contact.errors[:email]).not_to include("can't be blank")
   end
 
   it 'is invalid with a duplicate email address' do
     Contact.create(
-      firstname: 'Joe',
-      lastname: 'Button',
+      first_name: 'Joe',
+      last_name: 'Button',
       email: 'tester@example.com'
     )
     @contact = Contact.new(
-      firstname: 'Jane',
-      lastname: 'Button',
+      first_name: 'Jane',
+      last_name: 'Button',
       email: 'tester@example.com'
     )
     @contact.valid?
-    expect(@contact.errors[:email]).not_to include ('Has already been taken')
+    expect(@contact.errors[:email]).not_to include('Has already been taken')
   end
 
   it "returns a contact's full name as a string" do
-    @contact = Contact.new(
-      firstname: 'John',
-      lastname: 'Doe',
+    @contact = build(
+      :contact,
+      first_name: 'John',
+      last_name: 'Doe',
       email: 'john@email.com'
     )
     expect(@contact.name).to eq 'John Doe'
   end
 
-  it 'returns a sorted array of result that match' do
-    @johnwick = Contact.create(
-      firstname: 'John',
-      lastname: 'Wick',
-      email: 'jwick@example.com'
-    )
+  describe 'filter last_name by letter' do
+    before :each do
+      @smith = Contact.create(
+        first_name: 'John',
+        last_name: 'Smith',
+        email: 'jsmith@example.com'
+      )
 
-    @johnson = Contact.create(
-      firstname: 'John',
-      lastname: 'Johnson',
-      email: 'jjohnson@example.com'
-    )
+      @jones = Contact.create(
+        first_name: 'Tim',
+        last_name: 'Jones',
+        email: 'tjones@example.com'
+      )
+      @johnson = Contact.create(
+        first_name: 'John',
+        last_name: 'Johnson',
+        email: 'jjohnson@example.com'
+      )
+    end
 
-    expect(Contact.by_letter('J')).to eq [@johnson]
-  end
+    context 'with matching letters' do
+      it 'returns a sorted array of results that match' do
+        expect(Contact.by_letter('J')).to eq [@johnson, @jones]
+      end
+    end
 
-  it 'omits results that do not match' do
-    @johnwick = Contact.create(
-      firstname: 'John',
-      lastname: 'Wick',
-      email: 'jwick@example.com'
-    )
-
-    @smith = Contact.create(
-      firstname: 'John',
-      lastname: 'smith',
-      email: 'jsmith@example.com'
-    )
-
-    @johnson = Contact.create(
-      firstname: 'John',
-      lastname: 'Johnson',
-      email: 'jjohnson@example.com'
-    )
-
-    expect(Contact.by_letter('J')).not_to include @smith  
+    context 'non-matching letters' do
+      it 'omits results that do not match' do
+        expect(Contact.by_letter('J')).not_to include @smith
+      end
+    end
   end
 end
