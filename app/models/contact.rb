@@ -1,15 +1,18 @@
-class Contact < ActiveRecord::Base
+# frozen_string_literal: true
 
-	validates :firstname, presence: true
-  validates :lastname, presence: true
+# This is model class for Contact table
+class Contact < ActiveRecord::Base
+  has_many :phones
+  accepts_nested_attributes_for :phones
+
+  validates :first_name, presence: true
+  validates :last_name, presence: true
   validates :email, presence: true, uniqueness: true
-  	
   def name
-    [firstname,lastname].join(' ')
+    [first_name, last_name].join(' ')
   end
 
-
   def self.by_letter(letter)
-    where("lastname LIKE ?", "#{letter}%").order(:lastname)
+    where('last_name LIKE ?', "#{letter}%").order(:last_name)
   end
 end
