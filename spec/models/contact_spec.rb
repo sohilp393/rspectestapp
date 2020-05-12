@@ -6,35 +6,40 @@ require 'faker'
 RSpec.describe Contact, type: :model do
   
   let(:contact) { build(:contact)}
-  let(:joe) { create(:joe) }
-  let (:jane) { build(:jane) }
+  let(:joe) { create(:contact,
+                    first_name: 'Joe',
+                    last_name:'Button',
+                    email: 'tester@example.com') }
+
+  let(:jane) { create(:contact,
+              first_name:'Jane',
+              last_name: 'Test',
+              email: 'jones@example.com') }
+
+  describe 'Validations' do
+    it {
+      contact.first_name = nil
+      expect(contact).to validate_presence_of :first_name
+       }
+
+    it {
+      contact.last_name = nil
+      expect(contact).to validate_presence_of :last_name
+      }
+
+    it {
+      contact.email = nil
+      expect(contact).to validate_presence_of :email
+      }
+
+    it {
+      joe
+      expect(jane).to validate_uniqueness_of :email
+    }   
+  end
 
   it 'is valid with a firstname,lastname and email' do
     expect(contact).to be_valid
-  end
-
-  it 'is invalid without a first_name' do
-    contact.first_name = nil
-    contact.valid?
-    expect(contact.errors.full_messages.first).to include("can't be blank")
-  end
-
-  it 'is invalid without a last_name' do
-    contact.last_name = nil
-    contact.valid?
-    expect(contact.errors.full_messages.first).to include("can't be blank")
-  end
-
-  it 'is invalid without a email address' do
-    contact.email = nil
-    contact.valid?
-    expect(contact.errors[:email]).to include("can't be blank")
-  end
-
-  it 'is invalid with a duplicate email address' do
-    joe
-    jane.valid?
-    expect(jane.errors[:email]).not_to include('Has already been taken')
   end
 
   it "returns a contact's full name as a string" do
@@ -42,8 +47,16 @@ RSpec.describe Contact, type: :model do
   end
 
   describe 'filter last_name by letter' do
-    let(:jones) { create(:jones) }
-    let(:wick) { create(:wick) }
+    let(:jones) { create(:contact,
+              first_name:'John',
+              last_name: 'Jones',
+              email: 'jones@example.com') }
+    
+    let(:wick) { create(:contact,
+              first_name:'John',
+              last_name: 'Wick',
+              email: 'wick@example.com'  
+               ) }
 
     context 'with matching letters' do
       it 'returns a sorted array of results that match' do
