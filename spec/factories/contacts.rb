@@ -2,6 +2,7 @@
 
 # Read about factories at https://github.com/thoughtbot/factory_girl
 
+<<<<<<< HEAD
 FactoryGirl.define do
   factory :contact do
     first_name	{ Faker::Name.first_name }
@@ -34,3 +35,5 @@ FactoryGirl.define do
 
   end
 end
+=======
+>>>>>>> 12dd8d7c8339817d1c4ce4f5bcfad8628378414f
