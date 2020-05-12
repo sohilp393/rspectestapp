@@ -1,10 +1,3 @@
-GIT
-  remote: git://github.com/thoughtbot/shoulda-matchers.git
-  revision: 51bc31154840d9229c7383a74e469e9353043d74
-  specs:
-    shoulda-matchers (4.3.0)
-      activesupport (>= 4.2.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -178,6 +171,8 @@ GEM
       rubyzip (~> 1.0)
       websocket (~> 1.0)
     shoulda (2.11.3)
+    shoulda-matchers (4.3.0)
+      activesupport (>= 4.2.0)
     spring (2.1.0)
     sprockets (3.7.2)
       concurrent-ruby (~> 1.0)
@@ -226,7 +221,7 @@ DEPENDENCIES
   sdoc (~> 0.4.0)
   selenium-webdriver (~> 2.43.0)
   shoulda
-  shoulda-matchers!
+  shoulda-matchers (~> 4.3)
   spring
   sqlite3 (~> 1.3.0)
   turbolinks

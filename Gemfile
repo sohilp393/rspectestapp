@@ -38,7 +38,7 @@ group :development, :test do
   gem "factory_girl_rails", "~> 4.4.1"
   gem 'byebug'
   gem 'shoulda'
-  gem 'shoulda-matchers', github: 'thoughtbot/shoulda-matchers'
+  gem 'shoulda-matchers', '~> 4.3'
   gem 'rails-controller-testing'
 end
 
