@@ -4,19 +4,12 @@ require 'rails_helper'
 require 'faker'
 
 describe Phone, type: :model do
-  it 'does not allow duplicate phone number per contact' do
-    contact = create(:contact)
-    create(
-      :home_phone,
-      contact: contact,
-      phone: '785-555-1234'
-    )
-    mobile_phone = build(:mobile_phone, contact: contact, phone: '785-555-1234')
-    mobile_phone.valid?
-    expect(mobile_phone.errors[:phone]).to include('has already been taken')
+  describe 'associations' do
+    it { is_expected.to belong_to(:contact) }
   end
-  it 'allows two contacts to share a phone number' do
-    create(:home_phone, phone: '785-555-123')
-    expect(build(:home_phone, phone: '785-555-123')).to be_valid
+  describe 'validations' do
+    it { is_expected.to validate_presence_of :phone }
+
+    it { is_expected.to validate_length_of :phone }
   end
 end
