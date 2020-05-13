@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
+# Manages phone
 class Phone < ActiveRecord::Base
-	belongs_to :contact
+  belongs_to :contact
 
-  validates :phone, uniqueness: { scope: :contact_id }
+  validates :phone, presence: true, length: {maximum: 10}
 end
-
