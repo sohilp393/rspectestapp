@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-# This is model class for Contact table
+# Manages Contact
+
 class Contact < ActiveRecord::Base
   validates :first_name, :last_name, presence: true
   validates :email, presence: true, uniqueness: true
