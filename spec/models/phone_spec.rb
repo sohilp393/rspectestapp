@@ -4,10 +4,11 @@ require 'rails_helper'
 require 'faker'
 
 describe Phone, type: :model do
-  describe 'associations' do
+  describe 'Associations' do
     it { is_expected.to belong_to(:contact) }
   end
-  describe 'validations' do
+
+  describe 'Validations' do
     it { is_expected.to validate_presence_of :phone }
 
     it { is_expected.to validate_length_of :phone }
