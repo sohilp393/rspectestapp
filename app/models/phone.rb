@@ -2,7 +2,6 @@
 
 # Manages phone
 class Phone < ActiveRecord::Base
+  validates :phone, presence: true, length: { maximum: 10 }
   belongs_to :contact
-
-  validates :phone, presence: true, length: {maximum: 10}
 end
