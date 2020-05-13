@@ -7,15 +7,15 @@ FactoryGirl.define do
     association :contact
     phone { Faker::PhoneNumber.phone_number }
 
-    factory :home_phone do
+    trait :home_phone do
       phone_type 'home'
     end
 
-    factory :work_phone do
+    trait :work_phone do
       phone_type 'work'
     end
 
-    factory :mobile_phone do
+    trait :mobile_phone do
       phone_type 'mobile'
     end
   end
