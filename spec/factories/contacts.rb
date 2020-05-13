@@ -8,4 +8,3 @@ FactoryGirl.define do
     email	{ Faker::Internet.email }
   end
 end
-
