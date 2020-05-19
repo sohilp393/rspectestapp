@@ -4,8 +4,7 @@ require 'rails_helper'
 require 'faker'
 
 RSpec.describe Contact, type: :model do
-  let(:joe) do
-    create(
+  let(:joe) do create(
       :contact,
       first_name: 'Joe',
       last_name: 'Button',
